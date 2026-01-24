@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Đăng nhập</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 100px auto;
+        padding: 20px;
+      }
+      h2 {
+        text-align: center;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #357ae8;
+      }
+      #message {
+        margin-top: 0px;
+        color: red;
+        font-weight: bold;
+      }
+      body {
+        background: linear-gradient(to right, #2196f3, #21cbf3);
+      }
+      div {
+        background-color: white;
+        padding: 20px;
+        border-radius: px;
+      }
+      @keyframes smoothUp {
+        0% {
+          opacity: 0;
+          transform: translateY(30px) scale(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .form-animate {
+        animation: smoothUp 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+    </style>
+  </head>
+  <body>
+    <div style="border: 4px solid black; border-radius: 8px">
+      <div>
+        <h2 id="title">Đăng nhập</h2>
+        <!-- Form đăng nhập -->
+        <div id="loginForm" class="form-animate">
+          <input type="email" id="loginEmail" placeholder="Email" />
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" />
+          <button onclick="login()">Đăng nhập</button>
+          <button onclick="showRegister()">Đăng ký</button>
+        </div>
+
+        <!-- Form đăng ký -->
+        <div id="registerForm" style="display: none" class="form-animate">
+          <input type="email" id="registerEmail" placeholder="Email" />
+          <input
+            type="password"
+            id="registerPassword"
+            placeholder="Mật khẩu (tối thiểu 6 ký tự)"
+          />
+          <button onclick="register()">Đăng ký</button>
+          <button onclick="showLogin()">Đăng nhập</button>
+        </div>
+      </div>
+
+      <hr id="message" style="background-color: white" />
+    </div>
+
+    <script type="module" src="auth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<>, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input {
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .menu {
+      width: 100%;
+      max-width: 420px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .big-btn {
+      width: 100%;
+      padding: 22px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 14px;
+      border: none;
+      background: white;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .big-btn:hover {
+      transform: translateY(-3px);
+      background: #2196f3;
+      color: white;
+    }
+  </style>
+  <body>
+    <h1>Quản lí học sinh/h1>
+
+    <div
+      class="menu"
+      style="
+        border: 4px solid black;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 30px;
+      "
+    >
+      <button class="item">Bảng điểm</button>
+      <button class="item">Thêm khóa học</button>
+      <button class="item">Thông tin giáo viên</button>
+      <button class="item">Thống kê</button>
+      <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+    </div>
+
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
