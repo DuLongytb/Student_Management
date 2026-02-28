@@ -80,7 +80,13 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       padding: 10px;
       overflow-x: auto;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      width: 100%;
       max-width: 100%;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 65vh;
     }
 
     #scoreTable {
@@ -88,10 +94,12 @@
       border-collapse: collapse;
       table-layout: auto;
       font-size: 14.5px;
+      min-width: 900px; /* để bảng không bị co nát */
+      border-collapse: collapse;
     }
 
     /* HEADER */
-    #scoreTable thead th {
+    #infoTable thead th {
       background: linear-gradient(135deg, #2196f3, #21cbf3);
       color: white;
       padding: 12px 6px;
@@ -100,7 +108,7 @@
     }
 
     /* BODY */
-    #scoreTable tbody td {
+    #infoTable tbody td {
       padding: 10px 6px;
       border-bottom: 1px solid #eee;
       text-align: center;
@@ -108,53 +116,74 @@
       white-space: nowrap;
     }
 
-    #scoreTable tbody tr:hover {
+    #infoTable tbody tr:hover {
       background: #f4f9ff;
     }
 
     /* STT */
-    #scoreTable th:first-child,
-    #scoreTable td:first-child {
+    #infoTable th:first-child,
+    #infoTable td:first-child {
       width: 50px;
       font-weight: bold;
       color: #1976d2;
     }
 
     /* TÊN */
-    #scoreTable th:nth-child(2),
-    #scoreTable td:nth-child(2) {
+    #infoTable th:nth-child(2),
+    #infoTable td:nth-child(2) {
       width: 170px;
       text-align: left;
       font-weight: 500;
     }
 
     /* MÔN */
-    #scoreTable th:not(:first-child):not(:nth-child(2)),
-    #scoreTable td:not(:first-child):not(:nth-child(2)) {
+    #infoTable th:not(:first-child):not(:nth-child(2)),
+    #infoTable td:not(:first-child):not(:nth-child(2)) {
       width: 85px;
     }
 
     /* HOVER Ô ĐIỂM */
-    #scoreTable tbody td:not(:nth-child(1)):not(:nth-child(2)) {
+    #infoTable tbody td:not(:nth-child(1)):not(:nth-child(2)) {
       cursor: pointer;
     }
 
-    #scoreTable tbody td:not(:nth-child(1)):not(:nth-child(2)):hover {
+    #infoTable tbody td:not(:nth-child(1)):not(:nth-child(2)):hover {
       background: #e3f2fd;
       color: #1976d2;
       border-radius: 6px;
     }
 
+    /* NÚT XÓA */
+    #infoTable button {
+      background: linear-gradient(135deg, #2196f3, #21cbf3);
+      border: none;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #infoTable button:hover {
+      background: red;
+      color: #1976d2;
+      border-radius: 6px;
+    }
+
     /* EDIT TÊN */
-    #scoreTable td[contenteditable] {
+    #infoTable td[contenteditable] {
       border-bottom: 1px dashed #2196f3;
     }
 
-    #scoreTable td[contenteditable]:focus {
+    #infoTable td[contenteditable]:focus {
       outline: none;
       background: #e3f2fd;
     }
 
+    #tableBox thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
     /* ===== NÚT THÊM ===== */
     .table-box > button {
       margin-top: 12px;
@@ -172,11 +201,11 @@
     }
 
     /* ===== POPUP ===== */
-    #scoreModal > div {
+    #infoModal > div {
       animation: popup 0.25s ease;
     }
 
-    #scoreInputs input {
+    #infoInputs input {
       width: 60px;
       padding: 6px;
       text-align: center;
@@ -195,17 +224,17 @@
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1200px) {
-      #scoreTable {
+      #infoTable {
         font-size: 12.5px;
       }
 
-      #scoreTable th,
-      #scoreTable td {
+      #infoTable th,
+      #infoTable td {
         padding: 6px 3px;
       }
 
-      #scoreTable th:nth-child(2),
-      #scoreTable td:nth-child(2) {
+      #infoTable th:nth-child(2),
+      #infoTable td:nth-child(2) {
         width: 140px;
       }
     }
@@ -226,7 +255,7 @@
             alt="error"
             style="width: 40px; transform: scale(1.1)"
         /></a>
-        Quản lý điểm
+        Quản lý học sinh
       </h1>
 
       <div class="filter">
@@ -259,25 +288,20 @@
 
       <!-- BẢNG ĐIỂM -->
       <div class="table-box" id="tableBox" style="display: none">
-        <table id="scoreTable">
+        <table id="infoTable">
           <thead>
             <tr>
               <th>STT</th>
               <th>Tên</th>
-              <th>Toán</th>
-              <th>Văn</th>
-              <th>Anh</th>
-              <th>Sử</th>
-              <th>Địa</th>
-              <th>Lí</th>
-              <th>Hóa</th>
-              <th>Sinh</th>
-              <th>Tin</th>
-              <th>ĐTB</th>
+              <th>Giới tính</th>
+              <th>Năm sinh</th>
+              <th>Địa chỉ</th>
+              <th>Học lực</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
+        <button onclick="addStudent()">➕ Thêm học sinh</button>
       </div>
     </div>
     <div
@@ -314,6 +338,6 @@
       </div>
     </div>
 
-    <script type="module" src="score_sheet.js"></script>
+    <script type="module" src="student-info.js"></script>
   </body>
 </html>

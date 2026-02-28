@@ -9,6 +9,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      background-color: lavender;
     }
     input {
       padding: 10px;
@@ -17,11 +18,11 @@
       border-radius: 4px;
     }
     button {
-      padding: 10px 15px;
+      padding: 25px 50px;
       background-color: #28a745;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 15px;
       cursor: pointer;
     }
     button:hover {
@@ -56,7 +57,7 @@
     }
   </style>
   <body>
-    <h1>Quản lí học sinh/h1>
+    <h1 style="text-align: center; color: #003366">Quản lí học sinh</h1>
 
     <div
       class="menu"
@@ -65,13 +66,64 @@
         border-radius: 8px;
         padding: 20px;
         margin-top: 30px;
+        background: linear-gradient(to right, #1490f6, #38d3f6);
       "
     >
-      <button class="item">Bảng điểm</button>
-      <button class="item">Thêm khóa học</button>
-      <button class="item">Thông tin giáo viên</button>
-      <button class="item">Thống kê</button>
-      <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+      <button class="item">
+        <a
+          href="score_sheet.html"
+          style="
+            color: inherit;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 25px;
+          "
+          >Bảng điểm</a
+        >
+      </button>
+      <button class="item">
+        <a
+          href="student-info.html"
+          style="
+            color: inherit;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 25px;
+          "
+          >Thông tin học sinh</a
+        >
+      </button>
+      <button class="item">
+        <a
+          href=""
+          style="
+            color: inherit;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 25px;
+          "
+          >Thêm khóa học</a
+        >
+      </button>
+      <button class="item">
+        <a
+          href="teacher-account-info.html"
+          style="
+            color: inherit;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 25px;
+          "
+          >Thông tin tài khoản</a
+        >
+      </button>
+      <button
+        class="logout-btn"
+        onclick="logout()"
+        style="font-weight: bold; font-size: 25px"
+      >
+        Đăng xuất
+      </button>
     </div>
 
     <script type="module" src="index.js"></script>
