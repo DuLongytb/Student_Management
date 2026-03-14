@@ -1,16 +1,21 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 // Import Firebase
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+
 import { firebaseConfig } from "./config.js";
 
 // Khởi tạo Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 // Lấy DOM elements
 const getElement = (id) => document.getElementById(id);
@@ -58,7 +63,6 @@ window.login = async () => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     showMessage("Đăng nhập thành công!");
-    window.location.href = "index.html";
   } catch (error) {
     showMessage("Email hoặc mật khẩu không đúng!");
   }
@@ -78,9 +82,40 @@ window.showLogin = () => {
   document.getElementById("title").innerText = "Đăng nhập";
 };
 
-// Kiểm tra nếu đã đăng nhập thì chuyển sang index.html
+// Đăng xuất
+window.logout = async () => {
+  await signOut(auth);
+  window.location.href = "../auth.html";
+};
+
+// ===== Admin and User =====
+const adminEmails = ["hadulong12@gmail.com"];
+
+window.loginGoogle = () => {
+  signInWithPopup(auth, provider).then((result) => {
+    const email = result.user.email;
+
+    if (adminEmails.includes(email)) {
+      window.location.href =
+        "http://127.0.0.1:5500/Student_Management/admin/index.html";
+    } else {
+      window.location.href =
+        "http://127.0.0.1:5500/Student_Management/student/student.html";
+    }
+  });
+};
+
+// Kiểm tra nếu đã đăng nhập từ trước
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.location.href = "index.html";
+  if (!user) return;
+
+  const email = user.email;
+
+  if (adminEmails.includes(email)) {
+    window.location.href =
+      "http://127.0.0.1:5500/Student_Management/admin/index.html";
+  } else {
+    window.location.href =
+      "http://127.0.0.1:5500/Student_Management/student/student.html";
   }
 });

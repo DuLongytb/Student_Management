@@ -141,7 +141,11 @@ function syncStudents(cls) {
     if (!exist) {
       let scores = {};
       subjects.forEach((sub) => {
-        scores[sub] = [];
+        scores[sub] = {
+          tx: [],
+          gk: null,
+          ck: null,
+        };
       });
 
       db[cls].push({
@@ -206,10 +210,14 @@ function render() {
   const keyword = searchInput.value.toLowerCase().trim();
 
   db[cls]
-    .filter((st) => splitName(st.name).ten.toLowerCase().includes(keyword))
+    .filter((st) => {
+      const words = keyword.split(" ");
+      const name = st.name.toLowerCase();
+
+      return words.every((w) => name.includes(w));
+    })
     .forEach((st, i) => {
       let tr = document.createElement("tr");
-
       let html = `
       <td>${i + 1}</td>
       <td contenteditable onblur="editName('${cls}',${i},this.innerText)">${st.name}</td>
@@ -268,36 +276,50 @@ window.editName = function (cls, i, val) {
 
 let currentEdit = {};
 
-// ===== SỬA ĐIỂM (MỞ POPUP) =====
 window.editScore = function (cls, i, sub) {
   currentEdit = { cls, i, sub };
 
-  const arr = db[cls][i].scores[sub];
+  const score = db[cls][i].scores[sub] || { tx: [], gk: null, ck: null };
 
   document.getElementById("modalTitle").innerText =
     `${subjectNames[sub]} – ${db[cls][i].name}`;
 
   const box = document.getElementById("scoreInputs");
-  box.innerHTML = "";
 
-  arr.forEach((v, idx) => {
-    box.innerHTML += `
-      <div style="display:flex;gap:5px">
-        <input type="number" step="0.1" value="${v}" />
-        <button onclick="removeScore(${idx})">❌</button>
-      </div>
-    `;
-  });
+  const tx = score.tx || [];
 
-  box.innerHTML += `<input id="newScore" type="number" step="0.1" placeholder="+ Thêm">`;
+  box.innerHTML = `
+    <input class="TX" type="number" step="0.1" placeholder="TX1" value="${tx[0] ?? ""}">
+    <input class="TX" type="number" step="0.1" placeholder="TX2" value="${tx[1] ?? ""}">
+    <input class="TX" type="number" step="0.1" placeholder="TX3" value="${tx[2] ?? ""}">
+    <input class="TX" type="number" step="0.1" placeholder="TX4" value="${tx[3] ?? ""}">
+
+    <input id="GK" type="number" step="0.1" placeholder="Giữa kì"
+      value="${score.gk ?? ""}">
+
+    <input id="CK" type="number" step="0.1" placeholder="Cuối kì"
+      value="${score.ck ?? ""}">
+  `;
 
   document.getElementById("scoreModal").style.display = "flex";
 };
 
 // ===== TÍNH TRUNG BÌNH =====
-function calcAvg(arr = []) {
-  if (!arr.length) return "-";
-  return (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1);
+function calcAvg(score) {
+  if (!score) return "-";
+
+  const tx = score.tx || [];
+  const gk = score.gk;
+  const ck = score.ck;
+
+  if (tx.length === 0 || gk == null || ck == null) return "-";
+
+  const txSum = tx.reduce((a, b) => a + b, 0);
+
+  const sum = txSum + gk * 2 + ck * 3;
+  const weight = tx.length + 2 + 3;
+
+  return (sum / weight).toFixed(1);
 }
 
 function calcOverallAvg(scores) {
@@ -305,9 +327,10 @@ function calcOverallAvg(scores) {
   let count = 0;
 
   subjects.forEach((sub) => {
-    const arr = scores[sub];
-    if (arr && arr.length) {
-      sum += arr.reduce((a, b) => a + b, 0) / arr.length;
+    const avg = calcAvg(scores[sub]);
+
+    if (avg !== "-") {
+      sum += parseFloat(avg);
       count++;
     }
   });
@@ -328,15 +351,34 @@ window.removeScore = function (idx) {
 window.saveDetail = function () {
   const { cls, i, sub } = currentEdit;
 
-  let arr = [];
-  document.querySelectorAll("#scoreInputs input").forEach((inp) => {
+  const txInputs = document.querySelectorAll(".TX");
+  let tx = [];
+
+  txInputs.forEach((inp) => {
     const v = parseFloat(inp.value);
-    if (!isNaN(v)) arr.push(v);
+    if (!isNaN(v)) tx.push(v);
   });
 
-  if (!arr.length) return alert("Chưa có điểm!");
+  const gk = parseFloat(document.getElementById("GK").value);
+  const ck = parseFloat(document.getElementById("CK").value);
 
-  db[cls][i].scores[sub] = arr;
+  db[cls][i].scores[sub] = {
+    tx,
+    gk: isNaN(gk) ? null : gk,
+    ck: isNaN(ck) ? null : ck,
+  };
+
+  if (
+    tx.some((v) => v < 0 || v > 10) ||
+    gk < 0 ||
+    gk > 10 ||
+    ck < 0 ||
+    ck > 10
+  ) {
+    alert("Điểm phải từ 0 đến 10");
+    return;
+  }
+
   saveDB();
   closeModal();
   render();

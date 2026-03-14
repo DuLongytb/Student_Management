@@ -11,7 +11,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-import { firebaseConfig } from "./config.js";
+import { firebaseConfig } from "../config.js";
 
 // Khởi tạo Firebase
 const app = initializeApp(firebaseConfig);

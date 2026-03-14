@@ -88,7 +88,12 @@ function render() {
   const keyword = searchInput.value.toLowerCase();
 
   db[cls]
-    .filter((st) => splitName(st.name).ten.toLowerCase().includes(keyword))
+    .filter((st) => {
+      const words = keyword.split(" ");
+      const name = st.name.toLowerCase();
+
+      return words.every((w) => name.includes(w));
+    })
     .forEach((st, i) => {
       const tr = document.createElement("tr");
 
